@@ -15,9 +15,9 @@ of these newfound COVID-19 malicious domains can give us insight into how phishi
 
 ### Potential Questions
 
-How do these websites attempt to appear legitimate? (string analysis, etc.)
-Where are these domains being hosted? Who are they registered with?
-Is their time of registration in direct response to certain global events?
+How do these websites attempt to appear legitimate? (string analysis, etc.)  
+Where are these domains being hosted? Who are they registered with?  
+Is their time of registration in direct response to certain global events?  
 Outside of the virus itself, what other aspects do these domains target? (political, conspiracy theories, etc.)
 
 Exploratory Figures
