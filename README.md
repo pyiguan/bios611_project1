@@ -39,9 +39,8 @@ You'll need to build the container:
 
     > docker build . -t project1-env
 	
-This Docker container is based on rocker/verse. To run rstudio server:
+This Docker container is based on rocker/verse. To run rstudio server for a Windows machine through git bash:
 
-    >docker run -v "/$(pwd)":/home/rstudio -p 8787:8787\
-    -e PASSWORD=mypassword -t project1-env
+    > docker run -v "/$(pwd)":/home/rstudio -p 8787:8787 -e PASSWORD=mypassword -t project1-env
     
-Then connect to the machine on port 8787.
+Then connect to the machine on port 8787, username is "rstudio".
