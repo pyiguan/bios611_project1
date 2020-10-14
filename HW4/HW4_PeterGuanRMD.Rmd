@@ -19,7 +19,7 @@ library(factoextra)
 library(cluster)
 ```
 ```{r}
-df <- read_csv("../HW4/500_Person_Gender_Height_Weight_Index.csv") %>%
+df <- read_csv("500_Person_Gender_Height_Weight_Index.csv") %>%
   mutate(gender_binary = if_else(Gender == "Male", 1, 0))
 
 glmmodel <- glm(gender_binary ~ Height + Weight, family=binomial(link='logit'),
@@ -31,7 +31,6 @@ df <- df %>% mutate(glmmodel_pred = if_else(glmmodel_prob > 0.5, 1, 0)) %>%
 
 
 glmaccuracy <- sum(df$glmaccurate / nrow(df))
-glmaccuracy
 ```
 The accuracy of this model is 0.52.
 
@@ -49,6 +48,7 @@ gbmaccuracy <- sum(df$gbmaccurate / nrow(df))
 gbmaccuracy
 ```
 The accuracy of this model is 0.63.
+
 ## Question 3
 
 ```{r}
@@ -63,6 +63,7 @@ fiftyglmf1 <- F1_Score(y_pred = fiftyglmpred, y_true = df$gender_binary)
 fiftyglmf1
 ```
 The f1 score of this model is (approx.) 0.64.
+
 ## Question 4
 
 ```{r echo = FALSE}
@@ -72,6 +73,7 @@ plot(fiftyROC)
 ```
 This ROC curve plots the true positive rate against the false positive rate, giving us information as to the 
 tradeoff between the two.
+
 ## Question 5
 
 ```{r echo = FALSE}
