@@ -1,41 +1,25 @@
 BIOS 611 Project 1
 ====================
 
-COVID-19 Malicious Websites Dataset
+COVID-19 Malicious Domains
 ----------------------------------
 
-This repo will eventually contain an analysis of the Malicious Websites Dataset. 
+This repo contains an analysis of COVID-19 related Malicious Domains. 
 
 Proposal
 --------
-Phishing websites and malicious domains in general have been a known danger of the Internet since its inception. Many of these websites utilize various deceptive techniques in order to trick users
-into providing sensitive information. One common technique is to impersonate legitimate organizations or companies, such as through well-designed landing pages or URLs that differ only by a single character.
-With the advent of the global COVID-19 pandemic, malicious users have taken advantage of the ensuing confusion by creating domains explicitly related to the virus or its ramifications. Analyzing the characteristics
-of these newfound COVID-19 malicious domains can give us insight into how phishing websites and malicious users adapt their strategies to reflect current global events.
+Phishing websites and malicious domains in general have been a known danger of the Internet since its inception. Many resources
+have been put into developing methods and tools for detecting these websites. However, for malicious domains that may arise due to 
+current events, such as the SARS-CoV-2 pandemic, many of the features that these tools use are simply not present. This project 
+explores the possibility of phishing classification based solely on the URL's themselves, lacking any external metadata.
 
-### Potential Questions
-
-How do these websites attempt to appear legitimate? (string analysis, etc.)  
-Where are these domains being hosted? Who are they registered with?  
-Is their time of registration in direct response to certain global events?  
-Outside of the virus itself, what other aspects do these domains target? (political, conspiracy theories, etc.)
-
-Exploratory Figures
--------------------
-![](figures/domains_by_country.png)
-
-Interesting to see the geolocation of these domains, although there is al ot of missing data on this topic.
-
-![](figures/regdomains.png)
-
-Perhaps somebody should let GoDaddy know that something shady is going on?
 
 Usage
 -----
 
 You'll need Docker and the ability to run Docker as your current user.
 
-You'll need to build the container:
+First clone the repo. Afterwards, you'll need to build the container:
 
     > docker build . -t project1-env
 	
