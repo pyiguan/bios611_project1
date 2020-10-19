@@ -29,6 +29,18 @@ This Docker container is based on rocker/verse. To run rstudio server for a Wind
     
 Then connect to the machine on port 8787, username is "rstudio".
 
+Makefile
+---------
+The Makefile is a great way of seeing the outputs of the project. 
+
+To build any specific object, for example a figure, enter the Rstudio terminal and say:
+
+    > make figures/textconfusion.png
+
+If you would simply like to generate the final report along with all the assets created by the project, simply type:
+
+    > make report.pdf
+
 Note
 -------
 
