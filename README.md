@@ -28,3 +28,12 @@ This Docker container is based on rocker/verse. To run rstudio server for a Wind
     > docker run -v "/$(pwd)":/home/rstudio -p 8787:8787 -e PASSWORD=mypassword -t project1-env
     
 Then connect to the machine on port 8787, username is "rstudio".
+
+Note
+-------
+
+Creating the text model is fast (relatively speaking) but very memory hungry. If R throws a "cannot allocate vector of size n" error, go to line 15 of textanalysis.R.
+
+    > trainn3_dfm <- model_prep(traindf$Match, 3, trainMalOrder, 20, 20)
+
+From here, raise the last two numbers to trim more off of the document-term matrix. Note of course that this will have an impact on model performance. 
