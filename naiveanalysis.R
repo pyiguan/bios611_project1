@@ -5,13 +5,10 @@ library(glmnetUtils);
 library(caret);
 source("utils.R");
 
-
 traindf <- read_csv("derived_data/train.csv")
 testdf <- read_csv("derived_data/test.csv")
 
 traindf_enriched <- add_parameters(traindf, traindf$Match, traindf$Malicious)
-
-
 
 summarystat <- traindf_enriched %>% group_by(Malicious) %>% summarize(MeanLength = mean(Length), 
                                                   MeanHyphen = mean(hyphen),
@@ -29,10 +26,9 @@ glmnetpredictprob <- as.numeric(predict(glmnet_enriched, traindf_enriched, s = "
 trainconfusion <- confusionMatrix(data = glmnetpredict, reference = traindf_enriched$Malicious)
 print(trainconfusion)
 
-
 glm_train_roc <- roc(response = traindf_enriched$Malicious, predictor = glmnetpredictprob, levels = c("safe", "malicious"))
 
-##################################### Use testing data now
+#Use testing data now
 
 testdf_enriched <- add_parameters(testdf, testdf$Match, testdf$Malicious)
 
@@ -44,11 +40,12 @@ glmnettestpredictprob <- as.numeric(predict(glmnet_enriched, testdf_enriched, s 
 
 glm_test_roc <- roc(response = testdf_enriched$Malicious, predictor = glmnettestpredictprob, levels = c("safe", "malicious"))
 
+#For use to create a combined ROC curve plot later
 write_rds(glm_test_roc, "figures/glm_test_roc")
 
 testconfusionMatrix <- cmplot(testconfusion)
-ggsave("figures/naiveconfusion.png", testconfusionMatrix, width = 9.02, height = 5.72)
 
+ggsave("figures/naiveconfusion.png", testconfusionMatrix, width = 9.02, height = 5.72)
 
 sprintf("## A Naive Model
 

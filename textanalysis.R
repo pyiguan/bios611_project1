@@ -18,14 +18,14 @@ set.seed(1612)
 
 svmn3 <- textmodel_svm(trainn3_dfm, trainMalOrder)
 n3confusion <- confusionMatrix(data = predict(svmn3), reference = trainMalOrder)
+print(n3confusion)
 
 svmn3predictprob <- as.numeric(predict(svmn3, type = "probability")[,2])
 
 svmn3_roc <- roc(response = trainMalOrder, predictor = svmn3predictprob, levels = c("safe", "malicious"))
 
-###### Now using testing data
+#Now using testing data
 testMalOrder <- as.factor(testdf$Malicious)
-
 
 testn3_dfm <- model_prep(testdf$Match, 3, testMalOrder, 20, 20)
 testn3confusion <- confusionMatrix(data = predict(svmn3, testn3_dfm), reference = testMalOrder)
@@ -36,14 +36,17 @@ ggsave("figures/textconfusion.png", testn3confusionplot, width = 9.02, height = 
 svmn3testpredictprob <- as.numeric(predict(svmn3, testn3_dfm, type = "probability")[,2])
 
 svmn3test_roc <- roc(response = testMalOrder, predictor = svmn3testpredictprob, levels = c("safe", "malicious"))
+
+#Really don't need to do this, but I like the symmetry of saving both ROC files
 write_rds(svmn3test_roc, "figures/textn3_roc")
 
 # Plot ROC curves of both models
 naiive <- read_rds("figures/glm_test_roc")
 text <- read_rds("figures/textn3_roc")
 roc_curves <- ggroc(list(naiive, text), aes = "colour") + scale_color_discrete(name  ="Model",
-                                                                                        labels=c("Naive GLM", "Text SVM")) +
+                                                         labels=c("Naive GLM", "Text SVM")) +
                                                           guides(colour = guide_legend(reverse = TRUE))
+
 ggsave("figures/roc_curves.png", roc_curves, width = 9.02, height = 5.72)
 
 sprintf("## Text Model
@@ -77,6 +80,4 @@ Nevertheless, this still shows that there is utility in applying NLP techniques 
 
 The following are the ROC curves for the two models, plotted side by side.
 
-![](figures/roc_curves.png)
-        
-        ") %>% write_wrapped(file = "fragments/text_model.Rmd", append = FALSE)
+![](figures/roc_curves.png)") %>% write_wrapped(file = "fragments/text_model.Rmd", append = FALSE)

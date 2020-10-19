@@ -8,7 +8,6 @@ library(scales);
 clean_url <- function(x, urlcol) {
   remove_subdomain <- x %>% mutate(Match = ifelse(is.na(suffix_extract(urlcol)$subdomain), urlcol, 
                                                   str_replace(urlcol, suffix_extract(urlcol)$subdomain, "")));
-  
   remove_period <- remove_subdomain %>% mutate(Match = str_replace(remove_subdomain$Match, regex("^\\."), ""))
 }
 
@@ -37,9 +36,11 @@ cmplot <- function(cm){
   mytitle <- paste("Accuracy", percent_format()(cm$overall[1]),
                    "Sensitivity", percent_format()(cm$byClass[1]),
                    "Specificity", percent_format()(cm$byClass[2]))
+  
   table <- as.data.frame(cm$table)
   table$Prediction <- as.character(table$Prediction)
   table$Prediction <- factor(table$Prediction, levels=c("safe", "malicious"))
+  
   ggplot(data = table, aes(x = Reference, y = Prediction)) +
     geom_tile(aes(fill = log(Freq)), colour = "white") +
     scale_fill_gradient(low = "white", high = "steelblue") +
@@ -48,6 +49,7 @@ cmplot <- function(cm){
     ggtitle(mytitle)
 }
 
+#Stolen straight from Vincent's code, used to write the markdown fragments
 write_wrapped <- function(s, file, append=FALSE){
   s <- strwrap(s);
   write(s,file,append=append);
