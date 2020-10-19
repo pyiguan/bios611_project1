@@ -1,0 +1,51 @@
+---
+title: "COVID-19 Malicious URL Analysis"
+author: "Peter Guan"
+---
+
+
+## Introduction
+
+  As with any large-scale event, there will always be individuals who are looking to exploit it for their own benefit.
+The SARS-CoV-2 pandemic is certainly no exception to this maxim, with many accounts of people in all sectors seeking
+to profit from an otherwise tragic situation. One medium through which this occurs is the Internet. With rampant misinformation being disseminated at a rapid pace online, along with the rather unprecedented nature of the pandemic itself, malicious cyber-actors can stand to profit easily and immensely during such a time. One way in which they can do this is through the creation of malicious websites, often either mimicking legitimate sources about COVID-19 or offering miracle cures and homeopathic remedies. Thus, there exists a need for a way to identify and separate these phishing websites from otherwise non-malicious websites. Note here that "malicious" in this particular context is synonymous with "phishing", where a malicious website is one that intentionally tries to infect users with malware or steal private information. There are, of course, many quack websites that offer miracles or purport conspiracy theories. While these domains probably do not have the best interests of the random Internet denizen in mind, that alone is not enough to classify them as "malicious".
+
+  Phishing classification is a fundamental part of web security. Many data sets of phishing websites are publicly available in order to assist these classification endeavors, such as [this popular one][data4] from the UCI machine learning repo. These data sets often provide certain features that researchers have found to be predictive of phishing websites, such as the use of URL shorteners or the presence of certain JavaScript features. However, identifying many these particular features take a decent amount of time, making them much harder to come by in a current and evolving situation such as the SARS-CoV-2 pandemic. With the sheer number of new domains being created, I argue that there is a need to explore the predictive powers of models that only utilize features that can be derived from the domain names themselves. This project is an attempt to do just that.
+
+  
+
+## Data Sets
+
+The data sets used are the [SpyCloud COVID-19 Themed Domain][data1] data set, the [ProPrivacy COVID-19 Malicious Domain][data2] data set, and the [DomainTools COVID-19 Threat List][data3]. In total, after duplicates were removed,
+there were 104,052 malicious domains and 76,819 safe domains.
+
+
+```{r child = 'fragments/tidy_data.Rmd'}
+```
+
+```{r child = 'fragments/naive_model.Rmd'}
+```
+
+```{r child = 'fragments/text_model.Rmd'}
+```
+
+
+
+
+
+## Future Work
+
+To gain some insight into the social engineering behind the domain names, attempting to cluster the URLs could prove quite useful. As is, however, this is much easier said than done. Clustering using something like the Levenshtein metric to measure similarities is possible but not very useful. For example, covidfree.com and covidfreedom.com are much closer (distance of 3) than covidfreedom.com and freedomcovid.com (distance of 10). Instead, clustering by meaning would be much more ideal, but that is an incredibly daunting NLP problem (extracting meaning from what is essentially a concatenated word) and is way beyond my relatively limited knowledge. One particularly annoying limiting factor for the above is that it is quite difficult to split URL's into separate words. There exist ways to do so, such as [this one][data5] for Python, but URL's (especially phishing URL's) often include misspellings and other nonsense. 
+
+Another much more realistic avenue for future work is the development of a more advanced model that enriches the n-grams approach with other features such as the ones identified in more traditional phishing data sets. For example, one could analyze the URL's using an approach similar to the one I have done in this project and also consider other website features such as html tags. This was something I could have done, even just with the features I identified in the first analysis (length, number of hyphens, number of digits). One way would be to simply append them to the document-term matrix itself before analysis. I chose not to because I was uncertain about the theoretical implications of simply adding a dense feature to a sparse matrix (in terms of somehow biasing the result). Another approach would be to take the probabilities outputted by something like the linear SVM model I used in this project and use that as a predictor itself. 
+
+In terms of models that can take sparse matrices in R, glmnet is probably the other big one. Initially I did use glmnet for the n-grams analysis as well, but ran into issues when using test data as glmnet (as far as I can tell) requires that all test data have the same predictors as the training data. For an n-grams approach this is obviously quite a pain and arguably unrealistic for a real-world use of the model.
+
+
+***
+
+[data1]:https://spycloud.com/resource/covid19-domain-dataset/
+[data2]:https://github.com/ProPrivacy/covid-19
+[data3]:https://www.domaintools.com/resources/blog/free-covid-19-threat-list-domain-risk-assessments-for-coronavirus-threats
+[data4]:https://archive.ics.uci.edu/ml/datasets/phishing+websites#
+[data5]:https://github.com/keredson/wordninja
