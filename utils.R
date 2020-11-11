@@ -3,8 +3,14 @@ library(urltools);
 library(quanteda);
 library(scales);
 
+#Removes subdomains from url's
+remove_subdomain <- function(url) {
+  url <- ifelse(is.na(suffix_extract(url)$subdomain), url, 
+         str_replace(url, suffix_extract(url)$subdomain, ""))
+  remove_period <- str_replace(url, regex("^\\."), "")
+}
 
-#Strips url's down to subdomain
+#Strips table of url's down to subdomain
 clean_url <- function(x, urlcol) {
   remove_subdomain <- x %>% mutate(Match = ifelse(is.na(suffix_extract(urlcol)$subdomain), urlcol, 
                                                   str_replace(urlcol, suffix_extract(urlcol)$subdomain, "")));
