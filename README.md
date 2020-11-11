@@ -49,7 +49,8 @@ To run the shiny app, go to the terminal and run
 
     > PORT=8788 make domain_categorizer
 
-If you would like to run the shiny app on a different port, replace all instances of 8788 above with the appropriate port.
+Then connect to the machine on port 8788. If you would like to run the shiny app on a different port, 
+replace all instances of 8788 above with the appropriate port.
 
 Note
 -------
