@@ -20,6 +20,8 @@ svmn3 <- textmodel_svm(trainn3_dfm, trainMalOrder)
 n3confusion <- confusionMatrix(data = predict(svmn3), reference = trainMalOrder)
 print(n3confusion)
 
+write_rds(svmn3, "./models/textmodel")
+
 svmn3predictprob <- as.numeric(predict(svmn3, type = "probability")[,2])
 
 svmn3_roc <- roc(response = trainMalOrder, predictor = svmn3predictprob, levels = c("safe", "malicious"))
