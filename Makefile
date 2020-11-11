@@ -1,3 +1,4 @@
+.PHONY: domain_categorizer
 .PHONY: clean
 
 clean:
@@ -5,6 +6,7 @@ clean:
 	rm -f figures/*
 	rm -f fragments/*.Rmd
 	rm -f report.pdf
+	rm -f models/*
 
 derived_data/maldomain.csv derived_data/safedomain.csv derived_data/master.csv derived_data/train.csv derived_data/test.csv fragments/tidy_data.Rmd:\
 	source_data/ProPrivacy_VirusTotal.csv\
@@ -21,7 +23,7 @@ figures/naiveconfusion.png fragments/naive_model.Rmd figures/glm_test_roc:\
 	naiveanalysis.R
 		Rscript naiveanalysis.R
 
-figures/textconfusion.png figures/roc_curves.png fragments/text_model.Rmd:\
+figures/textconfusion.png figures/roc_curves.png fragments/text_model.Rmd models/textmodel:\
 	utils.R\
 	derived_data/train.csv\
 	derived_data/test.csv\
@@ -32,3 +34,6 @@ figures/textconfusion.png figures/roc_curves.png fragments/text_model.Rmd:\
 report.pdf:\
 	fragments/text_model.Rmd
 		Rscript -e "rmarkdown::render('report.Rmd',output_format='pdf_document')"
+
+domain_categorizer: models/textmodel
+	Rscript domain_categorizer.R ${PORT}
