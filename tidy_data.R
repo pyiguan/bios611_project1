@@ -23,6 +23,11 @@ safedomain <- alldomain %>% filter(!(Match %in% maldomain$Match)) %>%
 
 master <- full_join(safedomain, maldomain)
 
+# Writes csv's for python analysis to take advantage of NLTK
+malcloud <- cloud_prep(maldomain)
+safecloud <- cloud_prep(safedomain)
+
+
 # 70-30 train/test split
 set.seed(1612)
 traindf <- master %>% sample_frac(0.7)
@@ -33,6 +38,8 @@ write_csv(safedomain, "derived_data/safedomain.csv")
 write_csv(master, "derived_data/master.csv")
 write_csv(traindf, "derived_data/train.csv")
 write_csv(testdf, "derived_data/test.csv")
+write_csv(malcloud, "derived_data/malcloud_prep.csv")
+write_csv(safecloud, "derived_data/safecloud_prep.csv")
 
 sprintf("##
 Data Preparation
