@@ -41,6 +41,8 @@ Another much more realistic avenue for future work is the development of a more 
 
 In terms of models that can take sparse matrices in R, glmnet is probably the other big one. Initially I did use glmnet for the n-grams analysis as well, but ran into issues when using test data as glmnet (as far as I can tell) requires that all test data have the same predictors as the training data. For an n-grams approach this is obviously quite a pain and arguably unrealistic for a real-world use of the model.
 
+```{r child = 'fragments/cloud_generator.Rmd'}
+```
 
 ***
 
