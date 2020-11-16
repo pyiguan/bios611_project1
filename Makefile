@@ -30,7 +30,8 @@ figures/textconfusion.png figures/roc_curves.png fragments/text_model.Rmd models
 		Rscript textanalysis.R
 
 report.pdf:\
-	fragments/text_model.Rmd
+	fragments/text_model.Rmd\
+	fragments/cloud_generator.Rmd
 		Rscript -e "rmarkdown::render('report.Rmd',output_format='pdf_document')"
 
 domain_categorizer: models/textmodel
@@ -40,9 +41,9 @@ derived_data/malcloud.csv derived_data/safecloud.csv:\
 	derived_data/malcloud_prep.csv\
 	derived_data/safecloud_prep.csv\
 	wordcloud.py
-		python wordcloud.py
-		
-figures/malcloud.png figures/safecloud.png:\
+		python3 wordcloud.py
+
+figures/malcloud.png figures/safecloud.png fragments/cloud_generator.Rmd:\
 	derived_data/malcloud.csv\
 	derived_data/safecloud.csv\
 	cloud_generator.R
