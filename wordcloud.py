@@ -11,11 +11,13 @@ stop = stopwords.words('english')
 
 wn.DEFAULT_LANGUAGE_MODEL = wn.LanguageModel('covid_words.txt.gz')
 
+## Deletes strings that aren't in English (including strings that aren't words at all)
 def drop_nonword(word):
     word = " ".join(w for w in nltk.wordpunct_tokenize(word) \
              if w.lower() in words or not w.isalpha())
     return(word)
 
+## Splits domains, removes stopwords, lemmatizes, and drops non-words
 def cloud_prep(df):
     df = df.astype(str)
     df['Match'] = df['Match'].apply(wn.split)
