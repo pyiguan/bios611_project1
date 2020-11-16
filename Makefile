@@ -8,7 +8,7 @@ clean:
 	rm -f report.pdf
 	rm -f models/*
 
-derived_data/maldomain.csv derived_data/safedomain.csv derived_data/master.csv derived_data/train.csv derived_data/test.csv fragments/tidy_data.Rmd:\
+derived_data/maldomain.csv derived_data/safedomain.csv derived_data/master.csv derived_data/train.csv derived_data/test.csv derived_data/malcloud_prep.csv derived_data/safecloud_prep.csv fragments/tidy_data.Rmd:\
 	source_data/ProPrivacy_VirusTotal.csv\
 	source_data/dt-covid-19-threat-list.csv\
 	source_data/WHOISdatamaliciousdomains.csv\
@@ -17,14 +17,12 @@ derived_data/maldomain.csv derived_data/safedomain.csv derived_data/master.csv d
 		Rscript tidy_data.R
 
 figures/naiveconfusion.png fragments/naive_model.Rmd figures/glm_test_roc:\
-	utils.R\
 	derived_data/train.csv\
 	derived_data/test.csv\
 	naiveanalysis.R
 		Rscript naiveanalysis.R
 
 figures/textconfusion.png figures/roc_curves.png fragments/text_model.Rmd models/textmodel:\
-	utils.R\
 	derived_data/train.csv\
 	derived_data/test.csv\
 	figures/glm_test_roc\
@@ -37,3 +35,15 @@ report.pdf:\
 
 domain_categorizer: models/textmodel
 	Rscript domain_categorizer.R ${PORT}
+
+derived_data/malcloud.csv derived_data/safecloud.csv:\
+	derived_data/malcloud_prep.csv\
+	derived_data/safecloud_prep.csv\
+	wordcloud.py
+		python wordcloud.py
+		
+figures/malcloud.png figures/safecloud.png:\
+	derived_data/malcloud.csv\
+	derived_data/safecloud.csv\
+	cloud_generator.R
+		Rscript cloud_generator.R
