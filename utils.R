@@ -17,6 +17,12 @@ clean_url <- function(x, urlcol) {
   remove_period <- remove_subdomain %>% mutate(Match = str_replace(remove_subdomain$Match, regex("^\\."), ""))
 }
 
+#Prepares URL's for word splitting
+cloud_prep <- function(df) {
+  df <- df %>% select(1) %>% mutate (Match = host_extract(Match)[,2]) %>%
+    mutate(Match = str_replace_all(Match, regex("[^a-zA-Z]"), ""))
+}
+
 #Counts length of url, # of hyphens, and # of numbers
 add_parameters <- function(df, urlcol, malcol) {
   df_enriched <- df %>% mutate(Length = str_length(urlcol)) %>% mutate(hyphen = str_count(urlcol, "-")) %>%
